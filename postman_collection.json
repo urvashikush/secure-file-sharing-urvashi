@@ -1,0 +1,323 @@
+{
+  "info": {
+    "_postman_id": "a5e1b7c9-d8f4-4c3e-8a6d-9f1e2b3c4d5e",
+    "name": "Secure File Sharing API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Client Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"client@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/signup",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "signup"
+              ]
+            },
+            "description": "Register a new client user"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/verify-email/{{verification_token}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "verify-email",
+                "{{verification_token}}"
+              ]
+            },
+            "description": "Verify user email with token"
+          },
+          "response": []
+        },
+        {
+          "name": "Client Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"client_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"client@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Login as client user"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Ops User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"ops@example.com\",\n    \"password\": \"password123\",\n    \"admin_key\": \"{{admin_key}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/create-ops-user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "create-ops-user"
+              ]
+            },
+            "description": "Create an operations user"
+          },
+          "response": []
+        },
+        {
+          "name": "Ops Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"ops_token\", jsonData.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"ops@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Login as operations user"
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "File Operations",
+      "item": [
+        {
+          "name": "Upload File (Ops Only)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"file_id\", jsonData.file_id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ops_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/your/file.docx"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/upload-file",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "upload-file"
+              ]
+            },
+            "description": "Upload a file (Operations users only)"
+          },
+          "response": []
+        },
+        {
+          "name": "List Files (Client Only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{client_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/list-files",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "list-files"
+              ]
+            },
+            "description": "List all uploaded files (Client users only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Download Link (Client Only)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set(\"download_link\", jsonData[\"download-link\"]);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{client_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/download-file/{{file_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "download-file",
+                "{{file_id}}"
+              ]
+            },
+            "description": "Get a secure download link (Client users only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Download File with Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{download_link}}",
+              "host": [
+                "{{download_link}}"
+              ]
+            },
+            "description": "Download a file using the secure token"
+          },
+          "response": []
+        }
+      ],
+      "description": "File operation endpoints"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "admin_key",
+      "value": "your_secret_key",
+      "type": "string"
+    }
+  ]
+} 
