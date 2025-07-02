@@ -119,14 +119,10 @@ gunicorn -w 4 "app:create_app()"
 5. Set up proper logging and monitoring
 
 Postman screenshots
+![img4](https://github.com/user-attachments/assets/1eabfcc5-8c2f-4e05-8d69-708059bdf851)
+![img5](https://github.com/user-attachments/assets/21b5d08e-30b1-4300-be8c-05e7d802a7c3)
+![ing2](https://github.com/user-attachments/assets/662f2f0d-6b8d-4069-86b6-498e7d7087ef)
+![img1](https://github.com/user-attachments/assets/6cf29e8a-3b6c-4aca-949e-c7e84899ea18)
+![img3](https://github.com/user-attachments/assets/59da9765-3d81-4d69-99cd-89c910086902)
 
-image.png
-image.png
-image.png
-image.png
-image.png
-![image](https://github.com/user-attachments/assets/80d06334-0b68-41da-8114-e59cd51f114d)
-![image](https://github.com/user-attachments/assets/a9423086-00e3-4b16-9da4-2b2f0b618e97)
-![image](https://github.com/user-attachments/assets/eba7f7ae-f6df-4d31-b996-88f2ccb8fb71)
-![image](https://github.com/user-attachments/assets/3fc69c02-3539-4a35-a2bc-e435be752e12)
-![image](https://github.com/user-attachments/assets/602de89b-7178-40f3-becc-31a78ca465af)
+
